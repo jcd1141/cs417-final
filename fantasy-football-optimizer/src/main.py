@@ -8,7 +8,7 @@ def load_players(filename): #This is to load the players from CSV
     reader = csv.DictReader(file)
 
     for row in reader:
-        player = {}
+        player = {} 
 
         player["name"] = row["name"]
         player["position"] = row["position"]
@@ -27,6 +27,19 @@ def print_players(title, players): #Prints the players
 
     for player in players:
         print(player["name"], "-", player["position"], "-", player["projected"])
+
+def group_by_position(players):  # groups players by position
+    positions = {}  # dictionary where each position will have its own list
+
+    for player in players:  
+        position = player["position"]  # get player's position
+
+        if position not in positions: 
+            positions[position] = []  
+
+        positions[position].append(player)  # add player to the correct position list
+
+    return positions
 
 def main():
     starters = load_players("roster.csv") #Loading players
