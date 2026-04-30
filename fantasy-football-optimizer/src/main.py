@@ -40,6 +40,17 @@ def group_by_position(players):  # groups players by position
 
     return positions
 
+def build_heap(players):  # Creates a heap to rank players by projected points
+    heap = []
+
+    for player in players:
+        projected = player["projected"]  
+        name = player["name"] 
+
+        heapq.heappush(heap, (-projected, name, player))
+
+    return heap 
+
 def main():
     starters = load_players("data/roster.csv") #Loading players
     bench = load_players("data/bench.csv")
