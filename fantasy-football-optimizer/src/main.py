@@ -1,7 +1,8 @@
 import csv
+import heapq
 
 def load_players(filename): #This is to load the players from CSV
-    players = []
+    players = [] #Stores players as dictionaries
 
     file = open(filename, "r", encoding="utf-8")
     reader = csv.DictReader(file)
@@ -31,6 +32,8 @@ def main():
     starters = load_players("roster.csv") #Loading players
     bench = load_players("bench.csv")
     free_agents = load_players("free_agents.csv")
+
+    all_players = starters + bench + free_agents #Puts all players into one list
 
     print_players("Starters", starters) #Printing players
     print_players("Bench", bench)
