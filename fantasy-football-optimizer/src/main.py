@@ -10,10 +10,9 @@ def load_players(filename): #This is to load the players from CSV
     for row in reader:
         player = {} 
 
-        player["name"] = row["name"]
-        player["position"] = row["position"]
+        player["name"] = row["name"].strip()
+        player["position"] = row["position"].strip()
         player["projected"] = float(row["projected"])
-
         players.append(player)
 
     file.close()
@@ -42,15 +41,20 @@ def group_by_position(players):  # groups players by position
     return positions
 
 def main():
-    starters = load_players("roster.csv") #Loading players
-    bench = load_players("bench.csv")
-    free_agents = load_players("free_agents.csv")
+    starters = load_players("data/roster.csv") #Loading players
+    bench = load_players("data/bench.csv")
+    free_agents = load_players("data/free_agents.csv")
 
     all_players = starters + bench + free_agents #Puts all players into one list
+    grouped = group_by_position(all_players) #Positions grouped
 
-    print_players("Starters", starters) #Printing players
-    print_players("Bench", bench)
-    print_players("Free Agents", free_agents)
+    for position in grouped: #Testing grouping
+        print()
+        print(position)
+        print("-------")
+
+        for player in grouped[position]:
+            print(player["name"], "-", player["projected"])
 
 if __name__ == "__main__":
     main()
