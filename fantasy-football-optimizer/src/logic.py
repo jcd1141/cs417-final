@@ -61,14 +61,14 @@ def get_best_player(players):  #Returns the highest projected player
 
     return best
 
-def recommend_changes(starters, bench, free_agents):
+def recommend_starter_changes(starters, bench, free_agents):
     starters_by_position = group_by_position(starters)
     bench_by_position = group_by_position(bench)
     free_agents_by_position = group_by_position(free_agents)
 
     print()
-    print("Recommended Changes")
-    print("-------------------")
+    print("Starter Changes")
+    print("---------------")
 
     for position in starters_by_position:
         starter_list = starters_by_position[position]
@@ -106,3 +106,43 @@ def recommend_changes(starters, bench, free_agents):
             else:
                 print("Keep", starter["name"])
 
+def recommend_bench_changes(bench, free_agents):
+    bench_by_position = group_by_position(bench)
+    free_agents_by_position = group_by_position(free_agents)
+
+    print()
+    print("Bench Upgrade Suggestions")
+    print("-------------------------")
+
+    for position in bench_by_position:
+        bench_list = bench_by_position[position]
+
+        for player in bench_list:
+            print()
+            print(position + ":")
+            print("Current bench player:", player["name"], "-", player["projected"])
+
+            options = []
+
+            if position in free_agents_by_position:
+                options = options + free_agents_by_position[position]
+
+            best_option = get_best_player(options)
+
+            if best_option is None:
+                print("No free agent options found.")
+
+            elif best_option["projected"] > player["projected"]:
+                print(
+                    "Replace",
+                    player["name"],
+                    "with",
+                    best_option["name"],
+                    "from",
+                    best_option["source"],
+                    "-",
+                    best_option["projected"]
+                )
+
+            else:
+                print("Keep", player["name"])
