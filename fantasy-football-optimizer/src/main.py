@@ -60,17 +60,29 @@ def get_best_player(players):  #Returns the highest projected player
 
     return best
 
+def recommend_changes(starters, bench, free_agents):
+    starters_by_position = group_by_position(starters)
+    bench_by_position = group_by_position(bench)
+    free_agents_by_position = group_by_position(free_agents)
+
+    print()
+    print("Recommended Changes")
+    print("-------------------")
+
+    for position in starters_by_position:
+        starter_list = starters_by_position[position]
+
+        for starter in starter_list:
+            print()
+            print(position + ":")
+            print("Current starter:", starter["name"], "-", starter["projected"])
+
 def main():
-    starters = load_players("data/roster.csv") #Loading players
+    starters = load_players("data/roster.csv")
     bench = load_players("data/bench.csv")
     free_agents = load_players("data/free_agents.csv")
 
-    all_players = starters + bench + free_agents #Puts all players into one list
-    grouped = group_by_position(all_players) #Positions grouped
-
-    for position in grouped: #Testing best
-        best = get_best_player(grouped[position])
-        print(position, "BEST:", best["name"], "-", best["projected"])
+    recommend_changes(starters, bench, free_agents)
 
 if __name__ == "__main__":
     main()
