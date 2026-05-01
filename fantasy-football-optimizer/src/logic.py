@@ -1,7 +1,7 @@
 import csv
 import heapq
 
-def load_players(filename): #This is to load the players from CSV
+def load_players(filename, source): #This is to load the players from CSV
     players = [] #Stores players as dictionaries
 
     file = open(filename, "r", encoding="utf-8")
@@ -13,6 +13,7 @@ def load_players(filename): #This is to load the players from CSV
         player["name"] = row["name"].strip()
         player["position"] = row["position"].strip()
         player["projected"] = float(row["projected"].strip())
+        player["source"] = source
         players.append(player)
 
     file.close()
@@ -90,6 +91,18 @@ def recommend_changes(starters, bench, free_agents):
             if best_option is None:
                 print("No bench or free agent options found.")
 
+            elif best_option["projected"] > starter["projected"]:
+                print(
+                    "Replace",
+                    starter["name"],
+                    "with",
+                    best_option["name"],
+                    "from",
+                    best_option["source"],
+                    "-",
+                    best_option["projected"]
+                )
+
             else:
-                print("Best available:", best_option["name"], "-", best_option["projected"])
+                print("Keep", starter["name"])
 
