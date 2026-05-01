@@ -27,20 +27,20 @@ def print_players(title, players): #Prints the players
     for player in players:
         print(player["name"], "-", player["position"], "-", player["projected"])
 
-def group_by_position(players):  # groups players by position
-    positions = {}  # dictionary where each position will have its own list
+def group_by_position(players):  #Groups players by position
+    positions = {}  #Dictionary where each position will have its own list
 
     for player in players:  
-        position = player["position"]  # get player's position
+        position = player["position"]  #Get player's position
 
         if position not in positions: 
             positions[position] = []  
 
-        positions[position].append(player)  # add player to the correct position list
+        positions[position].append(player)  #Add player to the correct position list
 
     return positions
 
-def build_heap(players):  # Creates a heap to rank players by projected points
+def build_heap(players):  #Creates a heap to rank players by projected points
     heap = []
 
     for player in players:
@@ -51,6 +51,15 @@ def build_heap(players):  # Creates a heap to rank players by projected points
 
     return heap 
 
+def get_best_player(players):  #Returns the highest projected player
+    if len(players) == 0:
+        return None
+
+    heap = build_heap(players) 
+    best = heapq.heappop(heap)[2]  
+
+    return best
+
 def main():
     starters = load_players("data/roster.csv") #Loading players
     bench = load_players("data/bench.csv")
@@ -59,13 +68,9 @@ def main():
     all_players = starters + bench + free_agents #Puts all players into one list
     grouped = group_by_position(all_players) #Positions grouped
 
-    for position in grouped: #Testing grouping
-        print()
-        print(position)
-        print("-------")
-
-        for player in grouped[position]:
-            print(player["name"], "-", player["projected"])
+    for position in grouped: #Testing best
+        best = get_best_player(grouped[position])
+        print(position, "BEST:", best["name"], "-", best["projected"])
 
 if __name__ == "__main__":
     main()
